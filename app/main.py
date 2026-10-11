@@ -58,3 +58,13 @@ def borrow_book(book_id: int, data: BorrowRequest):
     book.is_borrowed = True
     book.borrower = data.borrower
     return book
+
+
+@app.post("/books/{book_id}/return", response_model=Book)
+def return_book(book_id: int):
+    book = get_or_404(book_id)
+    if not book.is_borrowed:
+        raise HTTPException(status_code=409, detail="Book is not borrowed")
+    book.is_borrowed = False
+    book.borrower = None
+    return book
