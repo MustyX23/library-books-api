@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { type Book, getBooks } from './api'
+import BookForm from './BookForm'
 
 export default function App() {
   const [books, setBooks] = useState<Book[]>([])
@@ -20,6 +21,7 @@ export default function App() {
     <main>
       <h1>Library Books</h1>
       {error && <p className="error">{error}</p>}
+      <BookForm onAdded={load} />
       {books.length === 0 ? (
         <p>No books yet</p>
       ) : (
