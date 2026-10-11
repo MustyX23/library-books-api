@@ -20,6 +20,6 @@ export async function request<T>(path: string, options?: RequestInit): Promise<T
 
 export type NewBook = Pick<Book, 'title' | 'author' | 'year'>
 
-export const getBooks = () => request<Book[]>('/books')
+export const getBooks = (q = '') => request<Book[]>(q ? `/books?q=${encodeURIComponent(q)}` : '/books')
 export const addBook = (book: NewBook) =>
   request<Book>('/books', { method: 'POST', body: JSON.stringify(book) })

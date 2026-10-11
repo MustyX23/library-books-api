@@ -4,10 +4,11 @@ import BookForm from './BookForm'
 
 export default function App() {
   const [books, setBooks] = useState<Book[]>([])
+  const [query, setQuery] = useState('')
   const [error, setError] = useState('')
 
   function load() {
-    getBooks()
+    getBooks(query)
       .then((data) => {
         setBooks(data)
         setError('')
@@ -15,13 +16,19 @@ export default function App() {
       .catch(() => setError('Could not load books. Is the API running?'))
   }
 
-  useEffect(load, [])
+  useEffect(load, [query])
 
   return (
     <main>
       <h1>Library Books</h1>
       {error && <p className="error">{error}</p>}
       <BookForm onAdded={load} />
+      <input
+        className="search"
+        placeholder="Search by title or author"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
       {books.length === 0 ? (
         <p>No books yet</p>
       ) : (
