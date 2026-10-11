@@ -27,7 +27,8 @@ def create_book(data: BookIn):
 def list_books(q: str | None = None):
     books = list(storage.books.values())
     if q:
-        books = [b for b in books if q in b.title or q in b.author]
+        q = q.lower()
+        books = [b for b in books if q in b.title.lower() or q in b.author.lower()]
     return books
 
 

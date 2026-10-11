@@ -45,3 +45,8 @@ def test_search_books(client, book):
     client.post("/books", json={"title": "Dune", "author": "Frank Herbert", "year": 1965})
     assert [b["title"] for b in client.get("/books?q=Orwell").json()] == ["1984"]
     assert [b["title"] for b in client.get("/books?q=Dune").json()] == ["Dune"]
+
+
+def test_search_is_case_insensitive(client, book):
+    assert len(client.get("/books?q=orwell").json()) == 1
+    assert len(client.get("/books?q=ORWELL").json()) == 1
