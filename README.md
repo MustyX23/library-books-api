@@ -54,6 +54,19 @@ curl -X POST http://127.0.0.1:8000/books/1/borrow -H "Content-Type: application/
      -d '{"borrower": "Ivan"}'
 ```
 
+## Web UI
+
+A very simple web page lives in `web/` (React + Vite + TypeScript).
+Start the API first, then:
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+Open http://localhost:5173. The API address can be changed with `VITE_API_URL`.
+
 ## Tests
 
 ```bash
