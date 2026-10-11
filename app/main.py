@@ -39,3 +39,9 @@ def update_book(book_id: int, data: BookIn):
     updated = book.model_copy(update=data.model_dump())
     storage.books[book_id] = updated
     return updated
+
+
+@app.delete("/books/{book_id}", status_code=204)
+def delete_book(book_id: int):
+    get_or_404(book_id)
+    del storage.books[book_id]
