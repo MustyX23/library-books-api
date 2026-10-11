@@ -24,3 +24,6 @@ export const getBooks = (q = '') => request<Book[]>(q ? `/books?q=${encodeURICom
 export const addBook = (book: NewBook) =>
   request<Book>('/books', { method: 'POST', body: JSON.stringify(book) })
 export const deleteBook = (id: number) => request<void>(`/books/${id}`, { method: 'DELETE' })
+export const borrowBook = (id: number, borrower: string) =>
+  request<Book>(`/books/${id}/borrow`, { method: 'POST', body: JSON.stringify({ borrower }) })
+export const returnBook = (id: number) => request<Book>(`/books/${id}/return`, { method: 'POST' })

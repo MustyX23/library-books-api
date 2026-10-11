@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { type Book, deleteBook, getBooks } from './api'
+import { type Book, borrowBook, deleteBook, getBooks, returnBook } from './api'
 import BookForm from './BookForm'
 
 export default function App() {
@@ -21,6 +21,18 @@ export default function App() {
   async function handleDelete(book: Book) {
     if (!confirm(`Delete "${book.title}"?`)) return
     await deleteBook(book.id)
+    load()
+  }
+
+  async function handleBorrow(book: Book) {
+    const name = prompt('Who is borrowing this book?')
+    if (!name) return
+    await borrowBook(book.id, name)
+    load()
+  }
+
+  async function handleReturn(book: Book) {
+    await returnBook(book.id)
     load()
   }
 
@@ -56,6 +68,11 @@ export default function App() {
                 <td>{book.year}</td>
                 <td>{book.is_borrowed ? `Borrowed by ${book.borrower}` : 'Available'}</td>
                 <td>
+                  {book.is_borrowed ? (
+                    <button onClick={() => handleReturn(book)}>Return</button>
+                  ) : (
+                    <button onClick={() => handleBorrow(book)}>Borrow</button>
+                  )}
                   <button onClick={() => handleDelete(book)}>Delete</button>
                 </td>
               </tr>
