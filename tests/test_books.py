@@ -39,3 +39,9 @@ def test_delete_book(client, book):
 
 def test_delete_missing_book(client):
     assert client.delete("/books/999").status_code == 404
+
+
+def test_search_books(client, book):
+    client.post("/books", json={"title": "Dune", "author": "Frank Herbert", "year": 1965})
+    assert [b["title"] for b in client.get("/books?q=Orwell").json()] == ["1984"]
+    assert [b["title"] for b in client.get("/books?q=Dune").json()] == ["Dune"]

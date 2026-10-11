@@ -24,8 +24,11 @@ def create_book(data: BookIn):
 
 
 @app.get("/books", response_model=list[Book])
-def list_books():
-    return list(storage.books.values())
+def list_books(q: str | None = None):
+    books = list(storage.books.values())
+    if q:
+        books = [b for b in books if q in b.title or q in b.author]
+    return books
 
 
 @app.get("/books/{book_id}", response_model=Book)
