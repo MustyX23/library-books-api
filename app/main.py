@@ -31,3 +31,11 @@ def list_books():
 @app.get("/books/{book_id}", response_model=Book)
 def get_book(book_id: int):
     return get_or_404(book_id)
+
+
+@app.put("/books/{book_id}", response_model=Book)
+def update_book(book_id: int, data: BookIn):
+    book = get_or_404(book_id)
+    updated = book.model_copy(update=data.model_dump())
+    storage.books[book_id] = updated
+    return updated
