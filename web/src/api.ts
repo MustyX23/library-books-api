@@ -18,4 +18,8 @@ export async function request<T>(path: string, options?: RequestInit): Promise<T
   return res.status === 204 ? (undefined as T) : res.json()
 }
 
+export type NewBook = Pick<Book, 'title' | 'author' | 'year'>
+
 export const getBooks = () => request<Book[]>('/books')
+export const addBook = (book: NewBook) =>
+  request<Book>('/books', { method: 'POST', body: JSON.stringify(book) })
