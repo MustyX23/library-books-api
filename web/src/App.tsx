@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { type Book, getBooks } from './api'
+import { type Book, deleteBook, getBooks } from './api'
 import BookForm from './BookForm'
 
 export default function App() {
@@ -17,6 +17,12 @@ export default function App() {
   }
 
   useEffect(load, [query])
+
+  async function handleDelete(book: Book) {
+    if (!confirm(`Delete "${book.title}"?`)) return
+    await deleteBook(book.id)
+    load()
+  }
 
   return (
     <main>
@@ -39,6 +45,7 @@ export default function App() {
               <th>Author</th>
               <th>Year</th>
               <th>Status</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -48,6 +55,9 @@ export default function App() {
                 <td>{book.author}</td>
                 <td>{book.year}</td>
                 <td>{book.is_borrowed ? `Borrowed by ${book.borrower}` : 'Available'}</td>
+                <td>
+                  <button onClick={() => handleDelete(book)}>Delete</button>
+                </td>
               </tr>
             ))}
           </tbody>

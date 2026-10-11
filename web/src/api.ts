@@ -23,3 +23,4 @@ export type NewBook = Pick<Book, 'title' | 'author' | 'year'>
 export const getBooks = (q = '') => request<Book[]>(q ? `/books?q=${encodeURIComponent(q)}` : '/books')
 export const addBook = (book: NewBook) =>
   request<Book>('/books', { method: 'POST', body: JSON.stringify(book) })
+export const deleteBook = (id: number) => request<void>(`/books/${id}`, { method: 'DELETE' })
