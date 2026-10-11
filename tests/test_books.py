@@ -11,3 +11,11 @@ def test_list_books(client, book):
 
 def test_list_books_empty(client):
     assert client.get("/books").json() == []
+
+
+def test_get_book(client, book):
+    assert client.get(f"/books/{book['id']}").json() == book
+
+
+def test_get_missing_book(client):
+    assert client.get("/books/999").status_code == 404
