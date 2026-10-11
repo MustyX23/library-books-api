@@ -1,9 +1,16 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from app import storage
 from app.models import Book, BookIn, BorrowRequest
 
 app = FastAPI(title="Library Books API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def get_or_404(book_id: int) -> Book:
