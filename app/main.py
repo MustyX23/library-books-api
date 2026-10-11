@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 
 from app import storage
-from app.models import Book, BookIn
+from app.models import Book, BookIn, BorrowRequest
 
 app = FastAPI(title="Library Books API")
 
@@ -48,3 +48,13 @@ def update_book(book_id: int, data: BookIn):
 def delete_book(book_id: int):
     get_or_404(book_id)
     del storage.books[book_id]
+
+
+@app.post("/books/{book_id}/borrow", response_model=Book)
+def borrow_book(book_id: int, data: BorrowRequest):
+    book = get_or_404(book_id)
+    if book.is_borrowed:
+        raise HTTPException(status_code=409, detail="Book is already borrowed")
+    book.is_borrowed = True
+    book.borrower = data.borrower
+    return book
