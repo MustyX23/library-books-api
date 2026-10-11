@@ -50,3 +50,13 @@ def test_search_books(client, book):
 def test_search_is_case_insensitive(client, book):
     assert len(client.get("/books?q=orwell").json()) == 1
     assert len(client.get("/books?q=ORWELL").json()) == 1
+
+
+def test_create_book_with_empty_title_is_rejected(client):
+    r = client.post("/books", json={"title": "", "author": "Someone", "year": 2000})
+    assert r.status_code == 422
+
+
+def test_create_book_with_empty_author_is_rejected(client):
+    r = client.post("/books", json={"title": "Some book", "author": "", "year": 2000})
+    assert r.status_code == 422

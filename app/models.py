@@ -2,8 +2,8 @@ from pydantic import BaseModel, Field
 
 
 class BookIn(BaseModel):
-    title: str
-    author: str
+    title: str = Field(min_length=1)
+    author: str = Field(min_length=1)
     year: int
 
 
