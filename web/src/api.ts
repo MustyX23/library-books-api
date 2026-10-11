@@ -17,3 +17,5 @@ export async function request<T>(path: string, options?: RequestInit): Promise<T
   if (!res.ok) throw new Error(`Request failed: ${res.status}`)
   return res.status === 204 ? (undefined as T) : res.json()
 }
+
+export const getBooks = () => request<Book[]>('/books')
