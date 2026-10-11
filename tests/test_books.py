@@ -30,3 +30,12 @@ def test_update_book(client, book):
 def test_update_missing_book(client):
     r = client.put("/books/999", json={"title": "X", "author": "Y", "year": 2000})
     assert r.status_code == 404
+
+
+def test_delete_book(client, book):
+    assert client.delete(f"/books/{book['id']}").status_code == 204
+    assert client.get(f"/books/{book['id']}").status_code == 404
+
+
+def test_delete_missing_book(client):
+    assert client.delete("/books/999").status_code == 404
